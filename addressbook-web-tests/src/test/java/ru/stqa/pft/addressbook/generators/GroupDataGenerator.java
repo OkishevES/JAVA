@@ -27,13 +27,13 @@ public class GroupDataGenerator {
   public String format;
 
   public static void main(String[] args) throws IOException {
-
+    //we get two parameters - count of group and file path to which data to generate
     GroupDataGenerator generator = new GroupDataGenerator();
-    JCommander jCommander = new JCommander(generator);
+    JCommander jCommander = new JCommander(generator); //jcommander is library for work with command line
     try {
-      jCommander.parse(args);
+      jCommander.parse(args);  // to get some args from command line and try to parse
     } catch (ParameterException ex) {
-      jCommander.usage();
+      jCommander.usage(); //if parameters are incorrect, jcommander sends how to use this GroupDataGenerator program
       return;
     }
     generator.run();
@@ -54,26 +54,29 @@ public class GroupDataGenerator {
   }
 
   private void saveAsJson(List<GroupData> groups, File file) throws IOException {
+    //Gson gson = new Gson(); //create gson, but it will have not very good format, not convenient for reading
     Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+    //GsonBuilder will create gson in good format
     String json = gson.toJson(groups);
-    try (Writer writer = new FileWriter(file)) {
-      writer.write(json);
+    try (Writer writer = new FileWriter(file)) { //init writer
+      writer.write(json); //using of writer, writer will close automatically after try-block is finished
     }
   }
 
   private void saveAsXml(List<GroupData> groups, File file) throws IOException {
     XStream xStream = new XStream();
-    xStream.processAnnotations(GroupData.class);
-    String xml = xStream.toXML(groups);
-    try (Writer writer = new FileWriter(file)) {
-      writer.write(xml);
+    xStream.processAnnotations(GroupData.class); //to read annotations in GroupData.class
+    String xml = xStream.toXML(groups); //to convert object to XML format
+    try (Writer writer = new FileWriter(file)) { //init of writer
+      writer.write(xml);  //using of writer, writer will close automatically after try-block is finished
     }
   }
 
   private void saveAsCsv(List<GroupData> groups, File file) throws IOException {
     System.out.println(new File(".").getAbsolutePath());
-    try (Writer writer = new FileWriter(file)) {
+    try (Writer writer = new FileWriter(file)) { //init writer
       for (GroupData group : groups) {
+        //to write in CSV format (comma-separated-values)
         writer.write(String.format("%s;%s;%s\n", group.getGrname(), group.getGrheader(), group.getGrfooter()));
       }
     }

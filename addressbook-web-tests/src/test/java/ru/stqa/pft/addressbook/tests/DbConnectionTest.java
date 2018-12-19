@@ -14,10 +14,10 @@ public class DbConnectionTest {
     Connection conn = null;
     try {
       conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/addressbook?user=root&password=&serverTimezone=UTC");
-      Statement st = conn.createStatement();
+      Statement st = conn.createStatement(); //create object to get data from database
       ResultSet rs = st.executeQuery("select group_id, group_name, group_header, group_footer from group_list"); //result is collection
       Groups groups = new Groups();
-      while (rs.next()) {
+      while (rs.next()) {  //method to go on all elements of this collection
         groups.add(new GroupData().withId(rs.getInt("group_id")).withName(rs.getString("group_name"))
                 .withFooter(rs.getString("group_header")).withFooter(rs.getString("group_footer")));
       }

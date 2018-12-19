@@ -19,53 +19,61 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GroupCreationTests extends TestBase {
 
-  @DataProvider
+  @DataProvider //with using DataProvider we separate data from test scenario
   public Iterator<Object[]> validGroupsCsv() throws IOException {
     List<Object[]> list = new ArrayList<Object[]>();
+    //open file for reading
     try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.csv")))) {
-
+      //BufferedReader allows to read the whole row from file (method readLine)
       String line = reader.readLine();
       while (line != null) {
-        String[] split = line.split(";");
+        String[] split = line.split(";"); //to cut row by ;-separator
         list.add(new Object[]{new GroupData().withName(split[0]).withHeader(split[1]).withFooter(split[2])});
         line = reader.readLine();
       }
-      return list.iterator();
+      return list.iterator();  //Test framework TestNG organizes cycle and give objects from list to test
     }
   }
 
-  @DataProvider
+  @DataProvider //with using DataProvider we separate data from test scenario
   public Iterator<Object[]> validGroupsXml() throws IOException {
+    //open file for reading
     try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.xml")))) {
-
-      String xml = "";
+      //BufferedReader allows to read the whole row from file (method readLine)
+      String xml = ""; //create empty row to which we will add all rows from file. It needs for method fromXML (it works with String format)
       String line = reader.readLine();
       while (line != null) {
-        xml += line;
+        xml += line; //add row to xml while get end of file
         line = reader.readLine();
       }
       XStream xStream = new XStream();
       xStream.processAnnotations(GroupData.class);
-      List<GroupData> groups = (List<GroupData>) xStream.fromXML(xml);
+      List<GroupData> groups = (List<GroupData>) xStream.fromXML(xml); //we set needed type of object to convert result of fromXML method
       return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
+      //list -> stream -> map applies to all elements some function (in this case - converts every element to Object[] type) ->
+      // -> collect in list by Collectors -> return iterator (to provide next data for test)
     }
   }
 
-  @DataProvider
+  @DataProvider //with using DataProvider we separate data from test scenario
   public Iterator<Object[]> validGroupsJson() throws IOException {
-
+    //open file for reading
     try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.json")))) {
-
-      String json = "";
+      //BufferedReader allows to read the whole row from file (method readLine)
+      String json = ""; //create empty row to which we will add all rows from file. It needs for method fromJson (it works with String format)
       String line = reader.readLine();
       while (line != null) {
-        json += line;
+        json += line; //add row to xml while get end of file
         line = reader.readLine();
       }
       Gson gson = new Gson();
       List<GroupData> groups = gson.fromJson(json, new TypeToken<List<GroupData>>() {
       }.getType());
+      //TypeToken<List<GroupData>>(){}.getType() - special construction to get type of data in which we need data from JSON file
+      //for other types of data (without <>, usual objects, not lists) we can set GroupData.class, for example (to point needed type)
       return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
+      //list -> stream -> map applies to all elements some function (in this case - converts every element to Object[] type) ->
+      // -> collect in list by Collectors -> return iterator (to provide next data for test)
     }
   }
 
@@ -84,7 +92,6 @@ public class GroupCreationTests extends TestBase {
                     .withHeader(app.db().selectGroupById(grId).getGrheader())
                     .withFooter(app.db().selectGroupById(grId).getGrfooter()))));
     verifyGroupListInUI();
-
     }
 
   @Test (enabled = false)

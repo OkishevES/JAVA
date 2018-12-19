@@ -10,33 +10,33 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@XStreamAlias("group")
-@Entity
-@Table (name = "group_list")
+@XStreamAlias("group") //set name for tag, more convenient name
+@Entity //declare that GroupData linked to database
+@Table (name = "group_list") //set needed table name
 public class GroupData {
-    @XStreamOmitField
-    @Id
+    @XStreamOmitField //miss this field in xml file
+    @Id //because this parameter is identifier
     @Column (name = "group_id")
     private int grid = Integer.MAX_VALUE;
 
-    @XStreamAlias("name")
-    @Expose
+    @XStreamAlias("name") //set name for tag
+    @Expose //include this field in json file
     @Column (name = "group_name")
     private String grname;
 
-    @Expose
-    @XStreamAlias("header")
+    @Expose //include this field in json file
+    @XStreamAlias("header") //set name for tag
     @Column (name = "group_header")
-    @Type(type = "text")
+    @Type(type = "text") //convert type of data to text
     private String grheader;
 
-    @Expose
-    @XStreamAlias("footer")
+    @Expose //include this field in json file
+    @XStreamAlias("footer") //set name for tag
     @Column (name = "group_footer")
-    @Type(type = "text")
+    @Type(type = "text") //convert type of data to text
     private String grfooter;
 
-    @ManyToMany(mappedBy = "groups")
+    @ManyToMany(mappedBy = "groups", fetch = FetchType.EAGER) //LAZY is a min info from db, EAGER is max info from db
     private Set<ContactData> contacts = new HashSet<ContactData>();
 
     public int getGrid() {

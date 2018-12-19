@@ -11,24 +11,24 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@XStreamAlias("contact")
-@Entity
-@Table(name = "addressbook")
+@XStreamAlias("contact") //set tag name
+@Entity //declare that ContactData linked to database
+@Table(name = "addressbook") //set needed table name
 public class ContactData {
-    @XStreamOmitField
-    @Id
+    @XStreamOmitField //miss this field, for XML file
+    @Id //because this parameter is identifier
     @Column (name = "id")
     private int id = Integer.MAX_VALUE;
 
-    @Expose
+    @Expose  //include this field, for JSON file
     @Column (name = "firstname")
     private String contactFirstName;
 
-    @Expose
+    @Expose  //include this field, for JSON file
     @Column (name = "lastname")
     private String contactLastName;
 
-    @Expose
+    @Expose   //include this field, for JSON file
     @Column (name = "nickname")
     private String contactNickName;
 
@@ -60,8 +60,8 @@ public class ContactData {
     @Type(type = "text")
     private String contactWorkPhone;
 
-    @Transient
-    @XStreamOmitField
+    @Transient //miss field during getting data from database
+    @XStreamOmitField //miss this field
     private String allPhones;
 
     @Expose
@@ -79,16 +79,16 @@ public class ContactData {
     @Type(type = "text")
     private String contactEmail3;
 
-    @Transient
-    @XStreamOmitField
+    @Transient //miss field during getting data from database
+    @XStreamOmitField //miss this field
     private String allEmails;
 
     @Column (name = "photo")
     @Type(type = "text")
     private String photo;
 
-    @XStreamOmitField
-    @ManyToMany (fetch = FetchType.EAGER)
+    @XStreamOmitField //miss this field
+    @ManyToMany (fetch = FetchType.EAGER) //LAZY is a min info from db, EAGER is max info from db
     @JoinTable(name = "address_in_groups",
             joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
     private Set<GroupData> groups = new HashSet<GroupData>();
@@ -241,6 +241,11 @@ public class ContactData {
         return this;
     }
 
+    public ContactData inGroup(GroupData group) {
+        groups.add(group);
+        return this;
+    }
+
     @Override
     public String toString() {
         return "ContactData{" +
@@ -291,8 +296,4 @@ public class ContactData {
         return Objects.hash(id, contactFirstName, contactLastName, contactNickName, contactTitle, contactCompany, contactAddress, contactHomePhone, contactMobilePhone, contactWorkPhone, allPhones, contactEmail, contactEmail2, contactEmail3, allEmails);
     }
 
-    public ContactData inGroup(GroupData group) {
-        groups.add(group);
-        return this;
-    }
 }

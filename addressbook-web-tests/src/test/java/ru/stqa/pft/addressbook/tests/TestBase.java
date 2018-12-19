@@ -21,7 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TestBase {
 
-  Logger logger = LoggerFactory.getLogger(TestBase.class);
+  Logger logger = LoggerFactory.getLogger(TestBase.class); //organize logs
 
   protected static final ApplicationManager app
           = new ApplicationManager(System.getProperty("browser", BrowserType.CHROME));
@@ -38,8 +38,8 @@ public class TestBase {
 
   @BeforeMethod (alwaysRun = true)
   public void logTestStart(Method m, Object[] p) {
-
-    logger.info("Start test " + m.getName() + " with parameters " + Arrays.asList(p));
+    //Method m will have information about method, which run it current moment, Object[] p - information about parameters
+    logger.info("Start test " + m.getName() + " with parameters " + Arrays.asList(p)); //Arrays.asList(p) to get information in convenient view
   }
 
   @AfterMethod (alwaysRun = true)

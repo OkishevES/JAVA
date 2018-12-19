@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import ru.mytest.addressbook.model.*;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.GroupData;
@@ -17,9 +18,9 @@ public class DbHelper {
   private final SessionFactory sessionFactory;
 
   public DbHelper() {
-
+    // A SessionFactory is set up once for an application!
     final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-            .configure()
+            .configure() // configures settings from hibernate.cfg.xml
             .build();
     sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
   }

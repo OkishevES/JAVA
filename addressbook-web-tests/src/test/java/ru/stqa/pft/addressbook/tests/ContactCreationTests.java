@@ -23,50 +23,60 @@ public class ContactCreationTests extends TestBase {
   @DataProvider
   public Iterator<Object[]> validContactsCsv() throws IOException {
     List<Object[]> list = new ArrayList<Object[]>();
+    //open file for reading
     try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.csv")))) {
+      //BufferedReader allows to read the whole row from file (method readLine)
       String line = reader.readLine();
       while (line != null) {
-        String[] split = line.split(";");
+        String[] split = line.split(";"); //to cut row by ;-separator
         list.add(new Object[]{new ContactData().withFirstName(split[0]).withLastName(split[1]).withNickName(split[2]).withTitle(split[3])
                 .withCompany(split[4]).withAddress(split[5]).withHomePhone(split[6]).withMobilePhone(split[7]).withWorkPhone(split[8])
                 .withEmail(split[9]).withEmail2(split[10]).withEmail3(split[11])});
         line = reader.readLine();
       }
-      return list.iterator();
+      return list.iterator(); //Test framework TestNG organizes cycle and give objects from list to test
     }
   }
 
   @DataProvider
   public Iterator<Object[]> validContactsXml() throws IOException {
+    //open file for reading
     try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.xml")))) {
-      String xml = "";
+      //BufferedReader allows to read the whole row from file (method readLine)
+      String xml = ""; //create empty row to which we will add all rows from file. It needs for method fromXML (it works with String format)
       String line = reader.readLine();
       while (line != null) {
-        xml += line;
+        xml += line; //add row to xml while get end of file
         line = reader.readLine();
       }
       XStream xStream = new XStream();
       xStream.processAnnotations(ContactData.class);
-      List<ContactData> contacts = (List<ContactData>) xStream.fromXML(xml);
+      List<ContactData> contacts = (List<ContactData>) xStream.fromXML(xml); //we set needed type of object to convert result of fromXML method
       return contacts.stream().map((c) -> new Object[]{c}).collect(Collectors.toList()).iterator();
-
+      //list -> stream -> map applies to all elements some function (in this case - converts every element to Object[] type) ->
+      // -> collect in list by Collectors -> return iterator (to provide next data for test)
     }
   }
 
   @DataProvider
   public Iterator<Object[]> validContactsJson() throws IOException {
+    //open file for reading
     try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.json")))) {
-
-      String json = "";
+      //BufferedReader allows to read the whole row from file (method readLine)
+      String json = ""; //create empty row to which we will add all rows from file. It needs for method fromJson (it works with String format)
       String line = reader.readLine();
       while (line != null) {
-        json += line;
+        json += line; //add row to xml while get end of file
         line = reader.readLine();
       }
       Gson gson = new Gson();
       List<ContactData> contacts = gson.fromJson(json, new TypeToken<List<ContactData>>() {
       }.getType());
+      //TypeToken<List<GroupData>>(){}.getType() - special construction to get type of data in which we need data from JSON file
+      //for other types of data (without <>, usual objects, not lists) we can set GroupData.class, for example (to point needed type)
       return contacts.stream().map((c) -> new Object[]{c}).collect(Collectors.toList()).iterator();
+      //list -> stream -> map applies to all elements some function (in this case - converts every element to Object[] type) ->
+      // -> collect in list by Collectors -> return iterator (to provide next data for test)
     }
   }
 
@@ -99,14 +109,14 @@ public class ContactCreationTests extends TestBase {
                     .withEmail2(app.db().selectContactById(id).getEmail2())
                     .withEmail3(app.db().selectContactById(id).getEmail3()))));
     verifyContactListInUI();
-  }
+    }
 
-  @Test (enabled = false)
-  public void testCurrentDir() {
+    @Test (enabled = false)
+    public void testCurrentDir() {
     File currentDir = new File(".");
     System.out.println(currentDir.getAbsolutePath());
     File photo = new File("src/test/resources/stru.png");
     System.out.println(photo.getAbsolutePath());
     System.out.println(photo.exists());
-  }
+    }
 }

@@ -90,7 +90,7 @@ public class GroupHelper extends HelperBase {
 
   public Groups all() {
     if (groupCache != null) {
-      return new Groups(groupCache);
+      return new Groups(groupCache); //return copy of groupCache
     }
     groupCache = new Groups();
     List<WebElement> elements = driver.findElements(By.cssSelector("span.group"));
