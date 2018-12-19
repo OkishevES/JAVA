@@ -1,0 +1,17 @@
+[
+  {
+    "grname": "group 0",
+    "grheader": "header 0",
+    "grfooter": "footer 0"
+  },
+  {
+    "grname": "group 1",
+    "grheader": "header 1",
+    "grfooter": "footer 1"
+  },
+  {
+    "grname": "group 2",
+    "grheader": "header 2",
+    "grfooter": "footer 2"
+  }
+]
