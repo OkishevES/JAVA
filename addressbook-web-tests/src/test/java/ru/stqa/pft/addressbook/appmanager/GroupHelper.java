@@ -23,6 +23,13 @@ public class GroupHelper extends HelperBase {
     type(By.name("group_footer"), groupData.getGrfooter());
   }
 
+  public void ensurePreconditions() {
+    app.goTo().groupPage();
+    if (app.db().groups().size() == 0) {
+      app.group().create(new GroupData().withName("Group3").withHeader("Group_new").withFooter("Group_new1"));
+    }
+  }
+
   public void initGroupCreation() {
     click(By.name("new"));
   }

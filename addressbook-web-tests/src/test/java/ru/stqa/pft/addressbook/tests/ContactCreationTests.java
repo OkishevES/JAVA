@@ -3,7 +3,7 @@ package ru.stqa.pft.addressbook.tests;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thoughtworks.xstream.XStream;
-import org.hamcrest.MatcherAssert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
@@ -27,8 +27,9 @@ public class ContactCreationTests extends TestBase {
       String line = reader.readLine();
       while (line != null) {
         String[] split = line.split(";");
-        list.add(new Object[]{new ContactData().withFirstName(split[0]).withLastName(split[1]).withNickName(split[2])
-                .withCompany(split[3]).withAddress(split[4]).withMobilePhone(split[5]).withEmail(split[6]).withGroup(split[7])});
+        list.add(new Object[]{new ContactData().withFirstName(split[0]).withLastName(split[1]).withNickName(split[2]).withTitle(split[3])
+                .withCompany(split[4]).withAddress(split[5]).withHomePhone(split[6]).withMobilePhone(split[7]).withWorkPhone(split[8])
+                .withEmail(split[9]).withEmail2(split[10]).withEmail3(split[11])});
         line = reader.readLine();
       }
       return list.iterator();
@@ -48,12 +49,14 @@ public class ContactCreationTests extends TestBase {
       xStream.processAnnotations(ContactData.class);
       List<ContactData> contacts = (List<ContactData>) xStream.fromXML(xml);
       return contacts.stream().map((c) -> new Object[]{c}).collect(Collectors.toList()).iterator();
+
     }
   }
 
   @DataProvider
   public Iterator<Object[]> validContactsJson() throws IOException {
     try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.json")))) {
+
       String json = "";
       String line = reader.readLine();
       while (line != null) {
@@ -67,12 +70,18 @@ public class ContactCreationTests extends TestBase {
     }
   }
 
+  @BeforeTest
+  public void ensurePreconditions() {
+    app.group().ensurePreconditions();
+  }
+
   @Test(dataProvider = "validContactsJson")
   public void testContactCreation(ContactData contact) throws Exception {
+    File photo = new File("src/test/resources/Avatar1.png");
     app.goTo().homePage();
     Contacts before = app.db().contacts();
-    app.contact().create(contact, true);
-    MatcherAssert.assertThat(app.contact().count(), equalTo(before.size() + 1));
+    app.contact().create(contact.inGroup(app.db().groups().iterator().next()).withPhoto(photo), true);
+    assertThat(app.contact().count(), equalTo(before.size() + 1));
     Contacts after = app.db().contacts();
 
     int id = after.stream().mapToInt((c) -> c.getId()).max().getAsInt();
@@ -89,15 +98,15 @@ public class ContactCreationTests extends TestBase {
                     .withEmail(app.db().selectContactById(id).getEmail())
                     .withEmail2(app.db().selectContactById(id).getEmail2())
                     .withEmail3(app.db().selectContactById(id).getEmail3()))));
-      verifyContactListInUI();
-    }
+    verifyContactListInUI();
+  }
 
-    @Test (enabled = false)
+  @Test (enabled = false)
   public void testCurrentDir() {
     File currentDir = new File(".");
     System.out.println(currentDir.getAbsolutePath());
     File photo = new File("src/test/resources/stru.png");
     System.out.println(photo.getAbsolutePath());
     System.out.println(photo.exists());
-    }
+  }
 }

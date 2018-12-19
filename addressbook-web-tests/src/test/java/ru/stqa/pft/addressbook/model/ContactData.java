@@ -7,7 +7,9 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.File;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @XStreamAlias("contact")
 @Entity
@@ -30,6 +32,7 @@ public class ContactData {
     @Column (name = "nickname")
     private String contactNickName;
 
+    @Expose
     @Column (name = "title")
     private String contactTitle;
 
@@ -42,6 +45,7 @@ public class ContactData {
     @Type(type = "text")
     private String contactAddress;
 
+    @Expose
     @Column (name = "home")
     @Type(type = "text")
     private String contactHomePhone;
@@ -51,11 +55,13 @@ public class ContactData {
     @Type(type = "text")
     private String contactMobilePhone;
 
+    @Expose
     @Column (name = "work")
     @Type(type = "text")
     private String contactWorkPhone;
 
     @Transient
+    @XStreamOmitField
     private String allPhones;
 
     @Expose
@@ -63,24 +69,29 @@ public class ContactData {
     @Type(type = "text")
     private String contactEmail;
 
+    @Expose
     @Column (name = "email2")
     @Type(type = "text")
     private String contactEmail2;
 
+    @Expose
     @Column (name = "email3")
     @Type(type = "text")
     private String contactEmail3;
 
     @Transient
+    @XStreamOmitField
     private String allEmails;
-
-    @Expose
-    @Transient
-    private String group;
 
     @Column (name = "photo")
     @Type(type = "text")
     private String photo;
+
+    @XStreamOmitField
+    @ManyToMany (fetch = FetchType.EAGER)
+    @JoinTable(name = "address_in_groups",
+            joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
+    private Set<GroupData> groups = new HashSet<GroupData>();
 
     public int getId() {
         return id;
@@ -142,12 +153,12 @@ public class ContactData {
         return allEmails;
     }
 
-    public String getGroup() {
-        return group;
-    }
-
     public File getPhoto() {
         return new File(photo);
+    }
+
+    public Groups getGroups() {
+        return new Groups(groups);
     }
 
     public ContactData withId(int id) {
@@ -225,11 +236,6 @@ public class ContactData {
         return this;
     }
 
-    public ContactData withGroup(String group) {
-        this.group = group;
-        return this;
-    }
-
     public ContactData withPhoto(File photo) {
         this.photo = photo.getPath();
         return this;
@@ -253,7 +259,6 @@ public class ContactData {
                 ", contactEmail2='" + contactEmail2 + '\'' +
                 ", contactEmail3='" + contactEmail3 + '\'' +
                 ", allEmails='" + allEmails + '\'' +
-                ", group='" + group + '\'' +
                 ", photo='" + photo + '\'' +
                 '}';
     }
@@ -284,5 +289,10 @@ public class ContactData {
     public int hashCode() {
 
         return Objects.hash(id, contactFirstName, contactLastName, contactNickName, contactTitle, contactCompany, contactAddress, contactHomePhone, contactMobilePhone, contactWorkPhone, allPhones, contactEmail, contactEmail2, contactEmail3, allEmails);
+    }
+
+    public ContactData inGroup(GroupData group) {
+        groups.add(group);
+        return this;
     }
 }
