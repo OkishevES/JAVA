@@ -3,50 +3,42 @@
     <contactFirstName>Fedor 0</contactFirstName>
     <contactLastName>Petrov 0</contactLastName>
     <contactNickName>Fedora 0</contactNickName>
+    <contactTitle>Title 0</contactTitle>
     <contactCompany>Company 0</contactCompany>
     <contactAddress>City 0</contactAddress>
+    <contactHomePhone>+7 919-234-76-40</contactHomePhone>
     <contactMobilePhone>+79121234560</contactMobilePhone>
-    <contactEmail>email0@mail.com</contactEmail>
-    <group>group 0</group>
+    <contactWorkPhone>8 (911) 123 45 60</contactWorkPhone>
+    <contactEmail>email_0@mail.com</contactEmail>
+    <contactEmail2>email2_0@mail.com</contactEmail2>
+    <contactEmail3>email3_0@mail.com</contactEmail3>
   </contact>
   <contact>
     <contactFirstName>Fedor 1</contactFirstName>
     <contactLastName>Petrov 1</contactLastName>
     <contactNickName>Fedora 1</contactNickName>
+    <contactTitle>Title 1</contactTitle>
     <contactCompany>Company 1</contactCompany>
     <contactAddress>City 1</contactAddress>
+    <contactHomePhone>+7 919-234-76-41</contactHomePhone>
     <contactMobilePhone>+79121234561</contactMobilePhone>
-    <contactEmail>email1@mail.com</contactEmail>
-    <group>group 1</group>
+    <contactWorkPhone>8 (911) 123 45 61</contactWorkPhone>
+    <contactEmail>email_1@mail.com</contactEmail>
+    <contactEmail2>email2_1@mail.com</contactEmail2>
+    <contactEmail3>email3_1@mail.com</contactEmail3>
   </contact>
   <contact>
     <contactFirstName>Fedor 2</contactFirstName>
     <contactLastName>Petrov 2</contactLastName>
     <contactNickName>Fedora 2</contactNickName>
+    <contactTitle>Title 2</contactTitle>
     <contactCompany>Company 2</contactCompany>
     <contactAddress>City 2</contactAddress>
+    <contactHomePhone>+7 919-234-76-42</contactHomePhone>
     <contactMobilePhone>+79121234562</contactMobilePhone>
-    <contactEmail>email2@mail.com</contactEmail>
-    <group>group 2</group>
-  </contact>
-  <contact>
-    <contactFirstName>Fedor 3</contactFirstName>
-    <contactLastName>Petrov 3</contactLastName>
-    <contactNickName>Fedora 3</contactNickName>
-    <contactCompany>Company 3</contactCompany>
-    <contactAddress>City 3</contactAddress>
-    <contactMobilePhone>+79121234563</contactMobilePhone>
-    <contactEmail>email3@mail.com</contactEmail>
-    <group>group 3</group>
-  </contact>
-  <contact>
-    <contactFirstName>Fedor 4</contactFirstName>
-    <contactLastName>Petrov 4</contactLastName>
-    <contactNickName>Fedora 4</contactNickName>
-    <contactCompany>Company 4</contactCompany>
-    <contactAddress>City 4</contactAddress>
-    <contactMobilePhone>+79121234564</contactMobilePhone>
-    <contactEmail>email4@mail.com</contactEmail>
-    <group>group 4</group>
+    <contactWorkPhone>8 (911) 123 45 62</contactWorkPhone>
+    <contactEmail>email_2@mail.com</contactEmail>
+    <contactEmail2>email2_2@mail.com</contactEmail2>
+    <contactEmail3>email3_2@mail.com</contactEmail3>
   </contact>
 </list>
