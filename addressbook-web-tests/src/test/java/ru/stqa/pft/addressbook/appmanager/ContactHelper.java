@@ -7,8 +7,11 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.tests.ContactPhoneTests;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertTrue;
 
@@ -33,6 +36,8 @@ public class ContactHelper extends HelperBase {
     type(By.name("mobile"), contactData.getMobilePhone());
     type(By.name("work"), contactData.getWorkPhone());
     type(By.name("email"), contactData.getEmail());
+    type(By.name("email2"), contactData.getEmail2());
+    type(By.name("email3"), contactData.getEmail3());
     //attach(By.name("photo"), contactData.getPhoto());
     if (creation) {
       if (isThereAGroupInList(contactData)) {
@@ -158,4 +163,27 @@ public class ContactHelper extends HelperBase {
     return new Contacts(contactCache);
   }
 
+  public String mergePhones(ContactData contact) {
+    return Arrays.asList(contact.getHomePhone(), contact.getMobilePhone(), contact.getWorkPhone()).stream()
+            .filter((s) -> ! s.equals(""))
+            .map(ContactPhoneTests::cleaned)
+            .collect(Collectors.joining("\n"));
+  }
+
+  public String mergeEmails(ContactData contact) {
+    return Arrays.asList(contact.getEmail(), contact.getEmail2(), contact.getEmail3()).stream()
+            .filter((s) -> ! s.equals("")).collect(Collectors.joining("\n"));
+  }
+
+  Contacts mergeDbContacts = null;
+
+  public Contacts mergeDbContacts(Contacts contacts) {
+    mergeDbContacts = new Contacts();
+    for (ContactData contact : contacts) {
+      mergeDbContacts.add(new ContactData().withId(contact.getId()).withFirstName(contact.getFirstName())
+              .withLastName(contact.getLastName()).withAddress(contact.getAddress())
+              .withAllPhones(app.contact().mergePhones(contact)).withAllEmails(app.contact().mergeEmails(contact)));
+    }
+    return new Contacts(mergeDbContacts);
+  }
 }

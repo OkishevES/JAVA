@@ -4,9 +4,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -16,29 +13,23 @@ public class ContactPhoneTests extends TestBase {
   public void ensurePreconditions() {
     app.goTo().homePage();
     if (app.contact().all().size() == 0) {
-      app.contact().create(new ContactData().withFirstName("Fedor").withLastName("Ivanov").withNickName("Vanilla").withTitle("Dev")
-              .withAddress("Ekaterinburg").withHomePhone("+7 919-234-76-35").withWorkPhone("+7 919 234 76 35")
-              .withEmail("fedor@gmail.com").withGroup("Group5"), true);
+      app.contact().create(new ContactData().withFirstName("Ivan").withLastName("Ivanovch").withNickName("Vano").withTitle("Dev")
+              .withCompany("My company").withAddress("Ekaterinburg").withHomePhone("+7 919-234-76-45").withMobilePhone("+79192347641")
+              .withWorkPhone("8 (911) 123 45 67").withEmail("fedor@gmail.com").withEmail2("fedor2@gmail.com")
+              .withEmail3("fedor3@gmail.com").withGroup("[none]"), true);
     }
   }
 
   @Test
   public void testContactPhones() {
-    ContactData contact = app.contact().all().iterator().next();
+    ContactData contact = app.contact().all().iterator().next(); //contact is chosen by random method
     ContactData contactInfoFromEditForm = app.contact().infoFromEditForm(contact);
 
-    assertThat(contact.getAllPhones(), equalTo(mergePhones(contactInfoFromEditForm)));
-  }
-
-  private String mergePhones(ContactData contact) {
-    return Arrays.asList(contact.getHomePhone(), contact.getMobilePhone(), contact.getWorkPhone()).stream()
-            .filter((s) -> ! s.equals(""))
-            .map(ContactPhoneTests::cleaned)
-            .collect(Collectors.joining("\n"));
-
+    assertThat(contact.getAllPhones(), equalTo(app.contact().mergePhones(contactInfoFromEditForm)));
   }
 
   public static String cleaned(String phone) {
     return phone.replaceAll("\\s","").replaceAll("[-()]","");
   }
 }
+

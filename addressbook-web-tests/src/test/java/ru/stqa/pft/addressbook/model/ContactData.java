@@ -248,10 +248,13 @@ public class ContactData {
                 ", contactHomePhone='" + contactHomePhone + '\'' +
                 ", contactMobilePhone='" + contactMobilePhone + '\'' +
                 ", contactWorkPhone='" + contactWorkPhone + '\'' +
+                ", allPhones='" + allPhones + '\'' +
                 ", contactEmail='" + contactEmail + '\'' +
                 ", contactEmail2='" + contactEmail2 + '\'' +
                 ", contactEmail3='" + contactEmail3 + '\'' +
+                ", allEmails='" + allEmails + '\'' +
                 ", group='" + group + '\'' +
+                ", photo='" + photo + '\'' +
                 '}';
     }
 
@@ -270,12 +273,16 @@ public class ContactData {
                 Objects.equals(contactHomePhone, that.contactHomePhone) &&
                 Objects.equals(contactMobilePhone, that.contactMobilePhone) &&
                 Objects.equals(contactWorkPhone, that.contactWorkPhone) &&
-                Objects.equals(contactEmail, that.contactEmail);
+                Objects.equals(allPhones, that.allPhones) &&
+                Objects.equals(contactEmail, that.contactEmail) &&
+                Objects.equals(contactEmail2, that.contactEmail2) &&
+                Objects.equals(contactEmail3, that.contactEmail3) &&
+                Objects.equals(allEmails, that.allEmails);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, contactFirstName, contactLastName, contactNickName, contactTitle, contactCompany, contactAddress, contactHomePhone, contactMobilePhone, contactWorkPhone, contactEmail);
+        return Objects.hash(id, contactFirstName, contactLastName, contactNickName, contactTitle, contactCompany, contactAddress, contactHomePhone, contactMobilePhone, contactWorkPhone, allPhones, contactEmail, contactEmail2, contactEmail3, allEmails);
     }
 }
