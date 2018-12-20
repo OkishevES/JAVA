@@ -24,18 +24,21 @@ public class ChangingUserPasswordTests extends TestBase {
     UserData changedUser = app.db().users().iterator().next();
     System.out.println(changedUser);
     String new_password = "new_password";
-    if (!changedUser.getUserName().equals("administrator")) {
-      app.admin().initChangePassword(changedUser);
-      app.admin().logout();
-      List<MailMessage> mailMessages = app.mail().waitForMail(1, 30000);
-      String confirmationLink = app.registration().findConfirmationLink(mailMessages, changedUser.getEmail());
-      app.registration().finish(confirmationLink, new_password);
+    System.out.println("Size = " + app.db().users().size());
+    if (app.db().users().size() > 1) {
+      if (!changedUser.getUserName().equals("administrator")) {
+        app.admin().initChangePassword(changedUser);
+        app.admin().logout();
+        List<MailMessage> mailMessages = app.mail().waitForMail(1, 30000);
+        String confirmationLink = app.registration().findConfirmationLink(mailMessages, changedUser.getEmail());
+        app.registration().finish(confirmationLink, new_password);
 
-      //app.admin().login(changedUser.getUserName(), new_password);
+        //app.admin().login(changedUser.getUserName(), new_password);
 
-      HttpSession session = app.newSession();
-      assertTrue(session.login(changedUser.getUserName(), new_password));
-      assertTrue(session.isLoggedInAs(changedUser.getUserName()));
+        HttpSession session = app.newSession();
+        assertTrue(session.login(changedUser.getUserName(), new_password));
+        assertTrue(session.isLoggedInAs(changedUser.getUserName()));
+      }
     }
   }
 
