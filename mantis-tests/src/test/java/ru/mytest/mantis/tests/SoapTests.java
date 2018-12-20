@@ -1,5 +1,6 @@
 package ru.mytest.mantis.tests;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.mytest.mantis.model.Issue;
 import ru.mytest.mantis.model.Project;
