@@ -1,1 +1,1 @@
-# java_progfortester
+# java_course
