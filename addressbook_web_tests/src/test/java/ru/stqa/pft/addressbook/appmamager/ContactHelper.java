@@ -13,6 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactHelper extends HelperBase {
+
+    public ApplicationManager app;
+
+    public ContactHelper(ApplicationManager app) {
+        super(app.wd);
+        this.app = app;
+    }
     public ContactHelper(WebDriver wd) {
         super(wd);
     }
@@ -74,6 +81,8 @@ public class ContactHelper extends HelperBase {
         retunToHomePage();
         contactCache = null;
     }
+
+
 
     public void delete(ContactData contact) {
         selectById(contact.getId());
@@ -182,5 +191,29 @@ public class ContactHelper extends HelperBase {
         selectById(contact.getId());
         click(By.name("remove"));
         retunToHomePage();
+    }
+
+    public void addContactToGroup(ContactData contact) {
+        selectContactById(contact.getId());
+        addToGroup();
+        //new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contact.getGroups().iterator().next().getName());
+    }
+    public void selectContactById(int id) {
+        wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
+    }
+    public void addToGroup() {
+        String groupName = app.db().groups().iterator().next().getName();
+        wd.findElement(By.name("to_group")).click();
+        wd.findElement(By.xpath("//select[@name = 'to_group']/option[text() = '" + groupName + "']")).click();
+        wd.findElement(By.xpath("//input[@value = 'Add to']")).click();
+        app.goTo().HomePage();
+    }
+    public void deleteContactFromGroup(ContactData contact) {
+        String groupName = app.db().groups().iterator().next().getName();
+        wd.findElement(By.name("group")).click();
+        wd.findElement(By.xpath("//select[@name = 'group']/option[text() = '" + groupName + "']")).click();
+        selectContactById(contact.getId());
+        wd.findElement(By.name("remove")).click();
+        wd.findElement(By.xpath("//a[contains(text(), 'group page')]")).click();
     }
 }
